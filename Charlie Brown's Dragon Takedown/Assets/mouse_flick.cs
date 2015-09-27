@@ -37,12 +37,12 @@ public class mouse_flick : MonoBehaviour {
 
         if ( isDragging)
         {
-            bool hasHit = dragPlane.Raycast(ray, out dist);
+            bool hasHit = dragPlane.Raycast(ray, out dist);     // wtf
 
             if (hasHit)
             {
-                moveTo = ray.GetPoint(dist);
-                GetComponent<Rigidbody>().AddTorque(5, 5, 5);
+                moveTo = ray.GetPoint(dist);                    // keep the die in motion
+                GetComponent<Rigidbody>().AddTorque(50, 50, 50);   // add rotation to the die
             }
         }
 

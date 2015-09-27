@@ -45,7 +45,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\die_controller.cs" />
+     <Compile Include="Assets\camera_controller.cs" />
      <Compile Include="Assets\mouse_flick.cs" />
      <Compile Include="Assets\table_controller.cs" />
  <Reference Include="UnityEngine.UI">

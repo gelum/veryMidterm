@@ -4,6 +4,7 @@ using System.Collections;
 public class mouse_flick : MonoBehaviour {
 
     private bool isDragging = false;
+    private bool dragPlaneSet = false;
     private Plane dragPlane;
     private Vector3 moveTo;
 
@@ -21,7 +22,7 @@ public class mouse_flick : MonoBehaviour {
         RaycastHit hit = new RaycastHit();
         float dist;
 
-        if ( Input.GetMouseButtonDown( 0))
+        if ( Input.GetMouseButtonDown( 0) || Input.GetMouseButton(0))
         {
             if ( Physics.Raycast( ray, out hit))
             {
@@ -30,10 +31,27 @@ public class mouse_flick : MonoBehaviour {
                     isDragging = true;
                     GetComponent<Rigidbody>().useGravity = false;
 
-                    dragPlane = new Plane(Vector3.up, transform.position + Vector3.up * addToY);
+                    if ( dragPlaneSet == false)
+                    {
+                        dragPlane = new Plane(Vector3.up, transform.position + Vector3.up * addToY);
+                        dragPlaneSet = true;
+                    }
                 }
             }
         }
+        //else if ( Input.GetMouseButton( 0))
+        //{
+        //    if ( Physics.Raycast( ray, out hit))
+        //    {
+        //        if ( hit.transform.root.transform == transform)
+        //        {
+        //            isDragging = true;
+        //            GetComponent<Rigidbody>().useGravity = false;
+
+        //            dragPlane = new Plane(Vector3.up, transform.position + Vector3.up * addToY);
+        //        }
+        //    }
+        //}
 
         if ( isDragging)
         {
@@ -49,6 +67,7 @@ public class mouse_flick : MonoBehaviour {
         if ( Input.GetMouseButtonUp( 0) && isDragging)
         {
             isDragging = false;
+            dragPlaneSet = false;
             GetComponent<Rigidbody>().useGravity = true;
         }
 	}

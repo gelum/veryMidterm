@@ -3,18 +3,29 @@ using System.Collections;
 
 public class camera_controller : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+    float zoomAmount = 0;
+    float maxClamp = 2;        // currently used for min/max
+                                // clamping
+    float scrollSpeed = 25f;
+
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame
 	void Update () {
         float xAxisValue = Input.GetAxis("Horizontal");
-        float zAxisValue = Input.GetAxis("Vertical");
-        if (Camera.current != null)
+        float yAxisValue = Input.GetAxis("Vertical");
+
+        zoomAmount += Input.GetAxis("Mouse ScrollWheel");
+        zoomAmount = Mathf.Clamp(zoomAmount, -maxClamp, maxClamp);
+        Debug.Log("zoomAmount = " + zoomAmount);
+        float zAxisTranslate = Mathf.Min(Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")), maxClamp - Mathf.Abs(zoomAmount));
+
+        if (Camera.main != null)
         {
-            Camera.current.transform.Translate(new Vector3(xAxisValue, 0.0f, zAxisValue));
+            Camera.main.transform.Translate(new Vector3(xAxisValue, yAxisValue, zAxisTranslate * scrollSpeed * Mathf.Sign(Input.GetAxis("Mouse ScrollWheel"))));
         }
+
     }
 }

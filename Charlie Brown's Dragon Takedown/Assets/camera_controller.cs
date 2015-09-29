@@ -4,8 +4,7 @@ using System.Collections;
 public class camera_controller : MonoBehaviour {
 
     float zoomAmount = 0;
-    float maxClamp = 2;        // currently used for min/max
-                                // clamping
+    float maxClamp = 2;        // currently used for min/max clamping
     float scrollSpeed = 25f;
 
     // Use this for initialization
@@ -19,7 +18,6 @@ public class camera_controller : MonoBehaviour {
 
         zoomAmount += Input.GetAxis("Mouse ScrollWheel");
         zoomAmount = Mathf.Clamp(zoomAmount, -maxClamp, maxClamp);
-        Debug.Log("zoomAmount = " + zoomAmount);
         float zAxisTranslate = Mathf.Min(Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")), maxClamp - Mathf.Abs(zoomAmount));
 
         if (Camera.main != null)

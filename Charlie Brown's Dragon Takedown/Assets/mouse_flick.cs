@@ -10,13 +10,15 @@ public class mouse_flick : MonoBehaviour {
     private Vector3 moveTo;
     private int randX, randY, randZ;
 
-    float dragDamper = 5.0f;
-    int sideUp = 0;
-    float addToY = 5.0f;
+    private float dragDamper = 5.0f;
+    private string sideUp = "";
+    private float addToY = 5.0f;
+
+    public string type;
 
 	// Use this for initialization
 	void Start () {
-	
+	    
 	}
 	
 	// Update is called once per frame
@@ -79,7 +81,7 @@ public class mouse_flick : MonoBehaviour {
             {
                 sideUp = CalcSideUp();
 
-                if (sideUp != 0)
+                if (!sideUp.Equals(""))
                 {
                     figuredOutFace = true;
                     Debug.Log("Side = " + CalcSideUp());
@@ -98,18 +100,61 @@ public class mouse_flick : MonoBehaviour {
         GetComponent<Rigidbody>().velocity = Vector3.Lerp(GetComponent<Rigidbody>().velocity, velocity, dragDamper * Time.deltaTime);
     }
 
-    int CalcSideUp()
+    string CalcSideUp()
     {
         float dotFwd = Vector3.Dot(transform.forward, Vector3.up);
-        if (dotFwd >= 0.99f) return 5;
-        if (dotFwd <= -0.99f) return 2;
+        if (dotFwd >= 0.99f)
+        {
+            // 5
+            if (type.Equals("warrior")) return "axe";
+            else if (type.Equals("blue dragon")) return "wing";
+            else if (type.Equals("green dragon")) return "wing";
+            else if (type.Equals("red dragon")) return "wing";
+        }
+        if (dotFwd <= -0.99f)
+        {
+            // 2
+            if (type.Equals("warrior")) return "shield";
+            else if (type.Equals("blue dragon")) return "mountain";
+            else if (type.Equals("green dragon")) return "fire";
+            else if (type.Equals("red dragon")) return "fire";
+        }
         float dotRight = Vector3.Dot(transform.right, Vector3.up);
-        if (dotRight >= 0.99f) return 4;
-        if (dotRight <= -0.99f) return 3;
+        if (dotRight >= 0.99f)
+        {
+            // 4
+            if (type.Equals("warrior")) return "shield";
+            else if (type.Equals("blue dragon")) return "tail";
+            else if (type.Equals("green dragon")) return "tail";
+            else if (type.Equals("red dragon")) return "tail";
+        }
+        if (dotRight <= -0.99f)
+        {
+            // 3
+            if (type.Equals("warrior")) return "shield";
+            else if (type.Equals("blue dragon")) return "mountain";
+            else if (type.Equals("green dragon")) return "mountain";
+            else if (type.Equals("red dragon")) return "fire";
+        }
         float dotUp = Vector3.Dot(transform.up, Vector3.up);
-        if (dotUp >= 0.99f) return 6;
-        if (dotUp <= -0.99f) return 1;
-        return 0;
+        if (dotUp >= 0.99f)
+        {
+            // 6
+            if (type.Equals("warrior")) return "axe";
+            else if (type.Equals("blue dragon")) return "head";
+            else if (type.Equals("green dragon")) return "head";
+            else if (type.Equals("red dragon")) return "head";
+        }
+        if (dotUp <= -0.99f)
+        {
+            // 1
+            if (type.Equals("warrior")) return "fire";
+            else if (type.Equals("blue dragon")) return "fire";
+            else if (type.Equals("green dragon")) return "fire";
+            else if (type.Equals("red dragon")) return "fire";
+        }
+
+        return "";
     }
 
 }

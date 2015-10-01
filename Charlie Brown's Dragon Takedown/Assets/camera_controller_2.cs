@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿//Fov Cam
+using UnityEngine;
 using System.Collections;
 
 public class camera_controller_2 : MonoBehaviour {
     //min and maximums for fov and fov start
     float minFov = 50f;     
-    float maxFov = 100f;
+    float maxFov = 200f;
     float fov = 50f;
 
     //speed for the scrolling 

@@ -23,6 +23,10 @@ public class camera_controller : MonoBehaviour {
         if (Camera.main != null)
         {
             Camera.main.transform.Translate(new Vector3(xAxisValue, yAxisValue, zAxisTranslate * scrollSpeed * Mathf.Sign(Input.GetAxis("Mouse ScrollWheel"))));
+            //if (Camera.main.transform.position.z + zAxisTranslate * scrollSpeed * Mathf.Sign(Input.GetAxis("Mouse ScrollWheel")) < 0.10f)
+            //    Camera.main.transform.Translate(new Vector3(xAxisValue, yAxisValue, zAxisTranslate * scrollSpeed * Mathf.Sign(Input.GetAxis("Mouse ScrollWheel"))));
+            //else
+            //    Camera.main.transform.Translate(new Vector3(xAxisValue, yAxisValue, 0));
         }
 
     }

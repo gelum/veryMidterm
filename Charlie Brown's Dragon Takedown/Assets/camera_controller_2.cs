@@ -21,7 +21,7 @@ public class camera_controller_2 : MonoBehaviour {
             zAxisValue += 1.5f;
         else if (Input.GetKey(KeyCode.PageDown))
             zAxisValue -= 1.5f;
-        Debug.Log(Camera.main.transform.position);
+//        Debug.Log(Camera.main.transform.position);
         
         //moving the camera
         if (Camera.main != null)

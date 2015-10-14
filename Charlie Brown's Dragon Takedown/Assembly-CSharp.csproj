@@ -45,9 +45,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Game_Rules_Controller.cs" />
      <Compile Include="Assets\Scripts\camera_controller.cs" />
      <Compile Include="Assets\Scripts\camera_controller_2.cs" />
+     <Compile Include="Assets\Scripts\dice_control.cs" />
+     <Compile Include="Assets\Scripts\global_control.cs" />
      <Compile Include="Assets\Scripts\mouse_flick.cs" />
      <Compile Include="Assets\Scripts\table_controller.cs" />
  <Reference Include="UnityEngine.Networking">

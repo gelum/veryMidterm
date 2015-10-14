@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Game_Rules_Controller : MonoBehaviour {
+public class dice_control : MonoBehaviour {
     string[] warriorDice = new string[3];       //
     string[] blueDragonDice = new string[3];    //All of the game dice faceUps 
     string[] greenDragonDice = new string[3];   //

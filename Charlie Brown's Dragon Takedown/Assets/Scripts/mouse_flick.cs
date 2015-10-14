@@ -15,6 +15,9 @@ public class mouse_flick : MonoBehaviour {
     private float addToY = 5.0f;            // how much should the die rise when we select
 
     public string type;                     // type of die (warrior, <colour> dragon)
+	public string subtype;					// type of dragon part (tail, wing, head)
+
+	static int index = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -91,6 +94,12 @@ public class mouse_flick : MonoBehaviour {
 
 	}
 
+	void OnDestroy()
+	{
+		if ( index > 0)
+			index--;
+	}
+
     void FixedUpdate()
     {
         if (!isDragging)
@@ -106,16 +115,16 @@ public class mouse_flick : MonoBehaviour {
         if (dotFwd >= 0.99f)
         {
             // 5
-            //Debug.Log("5");
-            if (type.Equals("warrior")) return "shield";
-            else if (type.Equals("blue dragon")) return "tail";
-            else if (type.Equals("green dragon")) return "tail";
-            else if (type.Equals("red dragon")) return "tail";
+            Debug.Log("5");
+            if (type.Equals("warrior")) return "axe";
+            else if (type.Equals("blue dragon")) return subtype;
+            else if (type.Equals("green dragon")) return subtype;
+            else if (type.Equals("red dragon")) return subtype;
         }
         if (dotFwd <= -0.99f)
         {
             // 2
-            //Debug.Log("2");
+            Debug.Log("2");
             if (type.Equals("warrior")) return "axe";
             else if (type.Equals("blue dragon")) return "fire";
             else if (type.Equals("green dragon")) return "mountain";
@@ -125,26 +134,26 @@ public class mouse_flick : MonoBehaviour {
         if (dotRight >= 0.99f)
         {
             // 4
-            //Debug.Log("4");
+            Debug.Log("4");
             if (type.Equals("warrior")) return "shield";
-            else if (type.Equals("blue dragon")) return "head";
-            else if (type.Equals("green dragon")) return "head";
-            else if (type.Equals("red dragon")) return "head";
-        }
-        if (dotRight <= -0.99f)
+			else if (type.Equals("blue dragon")) return subtype;
+			else if (type.Equals("green dragon")) return subtype;
+			else if (type.Equals("red dragon")) return subtype;
+		}
+		if (dotRight <= -0.99f)
         {
             // 3
-            //Debug.Log("3");
+            Debug.Log("3");
             if (type.Equals("warrior")) return "shield";
-            else if (type.Equals("blue dragon")) return "wing";
-            else if (type.Equals("green dragon")) return "wing";
-            else if (type.Equals("red dragon")) return "wing";
-        }
-        float dotUp = Vector3.Dot(transform.up, Vector3.up);
+			else if (type.Equals("blue dragon")) return subtype;
+			else if (type.Equals("green dragon")) return subtype;
+			else if (type.Equals("red dragon")) return subtype;
+		}
+		float dotUp = Vector3.Dot(transform.up, Vector3.up);
         if (dotUp >= 0.99f)
         {
             // 6
-            //Debug.Log("6");
+            Debug.Log("6");
             if (type.Equals("warrior")) return "axe";
             else if (type.Equals("blue dragon")) return "mountain";
             else if (type.Equals("green dragon")) return "fire";
@@ -153,14 +162,14 @@ public class mouse_flick : MonoBehaviour {
         if (dotUp <= -0.99f)
         {
             // 1
-            //Debug.Log("1");
+            Debug.Log("1");
             if (type.Equals("warrior")) return "fire";
-            else if (type.Equals("blue dragon")) return "mountain";
-            else if (type.Equals("green dragon")) return "fire";
-            else if (type.Equals("red dragon")) return "fire";
-        }
-
-        return "";
-    }
-
+			else if (type.Equals("blue dragon")) return subtype;
+			else if (type.Equals("green dragon")) return subtype;
+			else if (type.Equals("red dragon")) return subtype;
+		}
+		
+		return "";
+	}
+	
 }

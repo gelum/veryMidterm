@@ -6,6 +6,7 @@ public class mouse_flick : MonoBehaviour {
     private bool isDragging = false;        // is dice being dragged
     private bool dragPlaneSet = false;      // have we set the drag plane
     private bool figuredOutFace = true;     // have we figured out the face
+											// also serves as indicator of rolledness
     private Plane dragPlane;                // the drag plane ( the die is dragged along this)
     private Vector3 moveTo;                 // vec3 of where we are moving to ( cursor[] - die[])
     private int randX, randY, randZ;        // random multipliers for torque, either -1 or 1
@@ -18,10 +19,20 @@ public class mouse_flick : MonoBehaviour {
 	public string subtype;					// type of dragon part (tail, wing, head)
 
 	static int index = 0;
+	private int myIndex = 0;
+
+	GameObject control;
+	dice_control diceControl;
 
 	// Use this for initialization
 	void Start () {
 	    // nothing to see here atm
+
+		if (type == "warrior")
+			myIndex = index++;
+
+		control = GameObject.Find ("Control");					// save ref to control
+		diceControl = control.GetComponent<dice_control>();		// similarly for dice control
 	}
 	
 	// Update is called once per frame
@@ -87,7 +98,18 @@ public class mouse_flick : MonoBehaviour {
                 if (!sideUp.Equals(""))
                 {
                     figuredOutFace = true;
-                    Debug.Log("Side = " + CalcSideUp());
+					Debug.Log("Side = " + CalcSideUp() + "; Index = " + myIndex);
+
+					if ( type == "warrior")
+					{
+						diceControl.updateWarriorFaces( myIndex, sideUp);
+					}
+					else if ( type == "blue dragon" || type == "green dragon" 
+					       || type == "red dragon")
+					{
+						diceControl.updateDragonFaces( subtype, sideUp);
+					}
+
                 }
             }
         }
@@ -96,8 +118,13 @@ public class mouse_flick : MonoBehaviour {
 
 	void OnDestroy()
 	{
-		if ( index > 0)
+		if ( index > 0 && type == "warrior")
 			index--;
+	}
+
+	void resetDie()
+	{
+		figuredOutFace = false;
 	}
 
     void FixedUpdate()
@@ -115,7 +142,7 @@ public class mouse_flick : MonoBehaviour {
         if (dotFwd >= 0.99f)
         {
             // 5
-            Debug.Log("5");
+            //Debug.Log("5");
             if (type.Equals("warrior")) return "axe";
             else if (type.Equals("blue dragon")) return subtype;
             else if (type.Equals("green dragon")) return subtype;
@@ -124,9 +151,9 @@ public class mouse_flick : MonoBehaviour {
         if (dotFwd <= -0.99f)
         {
             // 2
-            Debug.Log("2");
+            //Debug.Log("2");
             if (type.Equals("warrior")) return "axe";
-            else if (type.Equals("blue dragon")) return "fire";
+            else if (type.Equals("blue dragon")) return "mountain";
             else if (type.Equals("green dragon")) return "mountain";
             else if (type.Equals("red dragon")) return "fire";
         }
@@ -134,7 +161,7 @@ public class mouse_flick : MonoBehaviour {
         if (dotRight >= 0.99f)
         {
             // 4
-            Debug.Log("4");
+            //Debug.Log("4");
             if (type.Equals("warrior")) return "shield";
 			else if (type.Equals("blue dragon")) return subtype;
 			else if (type.Equals("green dragon")) return subtype;
@@ -143,7 +170,7 @@ public class mouse_flick : MonoBehaviour {
 		if (dotRight <= -0.99f)
         {
             // 3
-            Debug.Log("3");
+            //Debug.Log("3");
             if (type.Equals("warrior")) return "shield";
 			else if (type.Equals("blue dragon")) return subtype;
 			else if (type.Equals("green dragon")) return subtype;
@@ -153,7 +180,7 @@ public class mouse_flick : MonoBehaviour {
         if (dotUp >= 0.99f)
         {
             // 6
-            Debug.Log("6");
+            //Debug.Log("6");
             if (type.Equals("warrior")) return "axe";
             else if (type.Equals("blue dragon")) return "mountain";
             else if (type.Equals("green dragon")) return "fire";
@@ -162,7 +189,7 @@ public class mouse_flick : MonoBehaviour {
         if (dotUp <= -0.99f)
         {
             // 1
-            Debug.Log("1");
+            //Debug.Log("1");
             if (type.Equals("warrior")) return "fire";
 			else if (type.Equals("blue dragon")) return subtype;
 			else if (type.Equals("green dragon")) return subtype;

@@ -13,10 +13,12 @@ public class global_control : MonoBehaviour {
 	int[] playersWithMaxPoints;
 	int numPlayersWithMaxPoints;
 
-	public Rigidbody test;
-	public Rigidbody test_red;
-	public Rigidbody test_blue;
-	public Rigidbody test_green;
+	public Rigidbody test_0;
+	public Rigidbody test_1;
+	public Rigidbody test_2;
+	public Rigidbody test_head;
+	public Rigidbody test_tail;
+	public Rigidbody test_wing;
 
 	// Use this for initialization
 	void Start () {
@@ -44,10 +46,12 @@ public class global_control : MonoBehaviour {
 		playersWithMaxPoints = new int[ numPlayers];
 		numPlayersWithMaxPoints = 0;
 
-		Instantiate (test, new Vector3 (0, 7, 3), Quaternion.identity);
-		Instantiate (test_red, new Vector3 (2, 7, 4), Quaternion.identity);
-		Instantiate (test_blue, new Vector3 (4, 7, 5), Quaternion.identity);
-		Instantiate (test_green, new Vector3 (6, 7, 6), Quaternion.identity);
+		Instantiate (test_0, new Vector3 (0, 7, 3), Quaternion.identity);
+		Instantiate (test_1, new Vector3 (2, 7, 5), Quaternion.identity);
+		Instantiate (test_2, new Vector3 (-2, 7, 5), Quaternion.identity);
+		Instantiate (test_head, new Vector3 (-2, 7, 1), Quaternion.identity);
+		Instantiate (test_wing, new Vector3 (0, 7, -1), Quaternion.identity);
+		Instantiate (test_tail, new Vector3 (2, 7, 1), Quaternion.identity);
 	}
 
 	void nextTurn()

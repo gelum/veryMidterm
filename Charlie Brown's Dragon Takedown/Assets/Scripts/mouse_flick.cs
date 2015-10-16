@@ -21,6 +21,12 @@ public class mouse_flick : MonoBehaviour {
 	static int index = 0;
 	private int myIndex = 0;
 
+	// variables to deal with moving die without changing the face
+	private bool isMoving = false;
+	private bool movingDragPlaneSet = false;
+	private Plane movingDragPlane;
+	private float addToYWhileMoving = 2.0f;
+
 	GameObject control;
 	dice_control diceControl;
 
@@ -41,51 +47,73 @@ public class mouse_flick : MonoBehaviour {
         RaycastHit hit = new RaycastHit();
         float dist;
 
-        if ( Input.GetMouseButtonDown( 0) || Input.GetMouseButton(0))
-        {
-            if ( Physics.Raycast( ray, out hit))
-            {
-                if ( hit.transform.root.transform == transform)
-                {
-                    isDragging = true;
-                    figuredOutFace = false;
-                    GetComponent<Rigidbody>().useGravity = false;
+        if (Input.GetMouseButtonDown (0) || Input.GetMouseButton (0)) {
+			if (Physics.Raycast (ray, out hit)) {
+				if (hit.transform.root.transform == transform) {
+					isDragging = true;
+					figuredOutFace = false;
+					GetComponent<Rigidbody> ().useGravity = false;
 
-                    if ( dragPlaneSet == false)
-                    {
-                        randX = Random.Range(1, 3);
-                        randY = Random.Range(1, 3);
-                        randZ = Random.Range(1, 3);
+					if (dragPlaneSet == false) {
+						randX = Random.Range (1, 3);
+						randY = Random.Range (1, 3);
+						randZ = Random.Range (1, 3);
 
-                        if (randX == 2) randX = -1;
-                        if (randY == 2) randY = -1;
-                        if (randZ == 2) randZ = -1;
+						if (randX == 2)
+							randX = -1;
+						if (randY == 2)
+							randY = -1;
+						if (randZ == 2)
+							randZ = -1;
 
-                        dragPlane = new Plane(Vector3.up, transform.position + Vector3.up * addToY);
-                        dragPlaneSet = true;
-                    }
-                }
-            }
-        }
+						dragPlane = new Plane (Vector3.up, transform.position + Vector3.up * addToY);
+						dragPlaneSet = true;
+					}
+				}
+			}
+		} else if (Input.GetMouseButtonDown (1) || Input.GetMouseButton (1)) {
+			if ( Physics.Raycast( ray, out hit))
+			{
+				if ( hit.transform.root.transform == transform)
+				{
+					isMoving = true;
+					GetComponent<Rigidbody> ().useGravity = false;
 
-        if ( isDragging)
-        {
-            bool hasHit = dragPlane.Raycast(ray, out dist);     // wtf
+					if ( movingDragPlaneSet == false) {
+						movingDragPlane = new Plane(Vector3.up, transform.position + Vector3.up * addToYWhileMoving);
+						movingDragPlaneSet = true;
+					}
+				}
+			}
+		}
+		
+        if (isDragging) {
+			bool hasHit = dragPlane.Raycast (ray, out dist);     // wtf
 
-            if (hasHit)
-            {
-                moveTo = ray.GetPoint(dist);                    // keep the die in motion
+			if (hasHit) {
+				moveTo = ray.GetPoint (dist);                    // keep the die in motion
 
-                GetComponent<Rigidbody>().AddTorque(50 * randX, 50 * randY, 50 * randZ);   // add rotation to the die
-            }
-        }
+				GetComponent<Rigidbody> ().AddTorque (50 * randX, 50 * randY, 50 * randZ);   // add rotation to the die
+			}
+		} else if (isMoving) {
+			bool hasHit = movingDragPlane.Raycast (ray, out dist);
 
-        if ( Input.GetMouseButtonUp( 0) && isDragging)
-        {
-            isDragging = false;
-            dragPlaneSet = false;
-            GetComponent<Rigidbody>().useGravity = true;
-        }
+			if (hasHit) {
+				moveTo = ray.GetPoint (dist);
+				Debug.Log("Hit");
+				// do not add torque when moving (not dragging)
+			}
+		}
+
+        if (Input.GetMouseButtonUp (0) && isDragging) {
+			isDragging = false;
+			dragPlaneSet = false;
+			GetComponent<Rigidbody> ().useGravity = true;
+		} else if (Input.GetMouseButtonUp (1) && isMoving) {
+			isMoving = false;
+			movingDragPlaneSet = false;
+			GetComponent<Rigidbody> ().useGravity = true;
+		}
 
         // check to see if rigidbody stopped
         if ( !figuredOutFace && !isDragging)
@@ -129,7 +157,7 @@ public class mouse_flick : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (!isDragging)
+        if (!isDragging && !isMoving)
             return;
 
         Vector3 velocity = moveTo - transform.position;

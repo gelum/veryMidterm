@@ -183,6 +183,8 @@ public class dice_control : MonoBehaviour {
 	void succededHunt()
 	{
 		Debug.Log ("A winner is you!");
+
+		this.gameObject.GetComponent<global_control> ().succededHunt ( huntedColour);
 	}
 
 	// method to deal with players failing a hunt and thus a turn

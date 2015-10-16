@@ -85,6 +85,16 @@ public class global_control : MonoBehaviour {
 		blueSlain = false;
 	}
 
+	public void succededHunt( string colour)
+	{
+		if (colour == "blue")
+			blueSlain = true;
+		else if (colour == "green")
+			greenSlain = true;
+		else if (colour == "red")
+			redSlain = true;
+	}
+
 	// Update is called once per frame
 	void Update () {
 	

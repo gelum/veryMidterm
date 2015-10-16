@@ -85,6 +85,27 @@ public class global_control : MonoBehaviour {
 		blueSlain = false;
 	}
 
+	void onPressEndTurn()
+	{
+		// play any relevant animations
+		nextTurn ();
+	}
+
+	void onPressHuntRed()
+	{
+
+	}
+
+	void onPressHuntGreen()
+	{
+
+	}
+
+	void onPressHuntBlue()
+	{
+
+	}
+
 	void resetDragonStatus()
 	{
 		blueSlain = false;
@@ -110,7 +131,11 @@ public class global_control : MonoBehaviour {
 
 		// if all 3 dragons slain this turn, reset all dragons
 		if (blueSlain && redSlain && greenSlain) {
+			blueSlain = false;
+			greenSlain = false;
+			redSlain = false;
 
+			// play relevant animations between
 		}
 	}
 

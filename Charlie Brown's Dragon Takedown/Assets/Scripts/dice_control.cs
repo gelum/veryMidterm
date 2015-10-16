@@ -165,6 +165,13 @@ public class dice_control : MonoBehaviour {
 				}
 			}
 
+			// empty array to avoid spillover data
+			for ( int i = 0; i < 3; i++)
+			{
+				warriorFaces[ i] = "";
+				dragonFaces[ i] = "";
+			}
+
 			// check results
 
 			// more fires than shields means dead warriors
@@ -189,6 +196,11 @@ public class dice_control : MonoBehaviour {
 			}
 
 		}
+	}
+
+	public void warriorDestroyedAtIndex( int theIndex)
+	{
+		warriorFaces [theIndex] = "destroyed";
 	}
 
 	// method to deal with player succeding this hunt

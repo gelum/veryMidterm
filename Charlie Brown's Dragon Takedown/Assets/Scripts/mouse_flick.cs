@@ -161,6 +161,9 @@ public class mouse_flick : MonoBehaviour {
 	{
 		if ( index > 0 && type == "warrior")
 			index--;
+
+		if (type == "warrior")
+			diceControl.warriorDestroyedAtIndex (myIndex);
 	}
 
 	void resetDie()

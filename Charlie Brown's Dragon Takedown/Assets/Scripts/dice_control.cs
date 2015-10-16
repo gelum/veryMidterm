@@ -3,14 +3,14 @@ using System.Collections;
 
 public class dice_control : MonoBehaviour {
 
-	bool shouldCheck;			// should we be checking for updoots... might be
-								// irrelephant
-
 	string[] warriorFaces;		// faces showing for warrior die
 	string[] dragonFaces;		// faces showing for dragon die
 	int updatesThisPhase;		// count the die that are finished rolling
 								// technically updates because this is dealt with
 								// in update methods called by dice
+	int numKeepDie;				// number of dragon die we are keeping
+								// need to know this to change updatesThisPhase
+	int numDeadWarriors;
 
 	int numWarriors;
 	string huntedColour;
@@ -19,8 +19,9 @@ public class dice_control : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		shouldCheck = false;
 		updatesThisPhase = 0;
+		numKeepDie = 0;
+		numDeadWarriors = 0;
 
 		headFound = false;
 		tailFound = false;
@@ -42,13 +43,20 @@ public class dice_control : MonoBehaviour {
 	void beginHunt( string colour)
 	{
 		huntedColour = colour;
+		numKeepDie = 0;
 		nextPhase ();
 	}
 
 	void nextPhase()
 	{
-		shouldCheck = true;		// is this relevant?
 		updatesThisPhase = 0;
+
+		// enable all die -- keep die are still marked as keep so no need to worry
+		GameObject[] dice = GameObject.FindGameObjectsWithTag ("Die");
+
+		foreach (GameObject die in dice) {
+			die.GetComponent<mouse_flick>().enableMe();
+		}	
 	}
 
 	// called by the die once they are rolled
@@ -64,7 +72,7 @@ public class dice_control : MonoBehaviour {
 	}
 
 	// called by the die once they are rolled
-	public void updateDragonFaces( string subtype, string face)
+	public void updateDragonFaces( string subtype, string face, mouse_flick sender)
 	{
 		// find appropriate index
 		// current mapping: head, tail, wing to 0, 1, 2 rsp.
@@ -89,11 +97,13 @@ public class dice_control : MonoBehaviour {
 			break;
 		}
 
-//		Debug.Log ("Index this round: " + index);
-
 		if (index != 3) {
 			dragonFaces [index] = face;
 			updatesThisPhase++;
+
+			if ( face == "head" || face == "wing" || face == "tail") { 
+				sender.setKeep( true);
+			}
 		}
 
 		// call assessPhase to see if we're done the phase
@@ -105,7 +115,7 @@ public class dice_control : MonoBehaviour {
 	{
 		Debug.Log ("Assessing phase... updates: " + updatesThisPhase);
 
-		if (updatesThisPhase >= 6) {	// can never be too sure
+		if (updatesThisPhase >= ( 6 - numKeepDie - numDeadWarriors)) {	// can never be too sure
 			// phase is over, calculate winner
 
 			Debug.Log ("Phase Over.");
@@ -141,14 +151,17 @@ public class dice_control : MonoBehaviour {
 				else if ( face == "head")
 				{
 					headFound = true;
+					numKeepDie++;
 				}
 				else if ( face == "wing")
 				{
 					wingFound = true;
+					numKeepDie++;
 				}
 				else if ( face == "tail")
 				{
 					tailFound = true;
+					numKeepDie++;
 				}
 			}
 
@@ -191,7 +204,7 @@ public class dice_control : MonoBehaviour {
 	// go to next players turn
 	void failedHunt()
 	{
-
+		Debug.Log ("fck u");
 	}
 
 	// method to deal with destruction of warrior die
@@ -200,6 +213,18 @@ public class dice_control : MonoBehaviour {
 	{
 		Debug.Log ("Need to kill " + howMany + " warriors.");
 		numWarriors -= howMany;
+		numDeadWarriors += howMany;
+
+		GameObject[] dice = GameObject.FindGameObjectsWithTag ("Die");
+
+		int needToDestroy = howMany;
+		foreach (GameObject die in dice) {
+			if (die.GetComponent<mouse_flick>().type == "warrior" && needToDestroy > 0)
+			{
+				needToDestroy--;
+				Destroy( die);
+			}
+		}
 	}
 
     int getNumSideUp(string[] array, string s) {

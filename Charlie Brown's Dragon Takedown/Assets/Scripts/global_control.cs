@@ -85,14 +85,33 @@ public class global_control : MonoBehaviour {
 		blueSlain = false;
 	}
 
+	void resetDragonStatus()
+	{
+		blueSlain = false;
+		redSlain = false;
+		greenSlain = false;
+
+		// play animations on buttons
+	}
+
 	public void succededHunt( string colour)
 	{
-		if (colour == "blue")
+		// mark dragons as slain and increment points
+		if (colour == "blue") {
 			blueSlain = true;
-		else if (colour == "green")
+			points[ curPlayer] += 2;
+		} else if (colour == "green") {
 			greenSlain = true;
-		else if (colour == "red")
+			points[ curPlayer] += 4;
+		} else if (colour == "red") {
 			redSlain = true;
+			points[ curPlayer] += 6;
+		}
+
+		// if all 3 dragons slain this turn, reset all dragons
+		if (blueSlain && redSlain && greenSlain) {
+
+		}
 	}
 
 	// Update is called once per frame
